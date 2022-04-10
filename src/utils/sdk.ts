@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { DocumentNode } from 'graphql';
 
 export const graphQLRequest = async (
-  query: string,
+  query: DocumentNode | string,
   variables?: Record<string, unknown>
 ) => {
   try {

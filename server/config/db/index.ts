@@ -9,7 +9,6 @@ if (!URI) {
 const connectDB = async () => {
   try {
     await mongoose.connect(URI);
-
     console.log('db success connect');
   } catch (err) {
     console.log('error connecting to database');

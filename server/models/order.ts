@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
-import Customer from 'server/models/customer';
-import Restaurant from './restaurant';
+
+import Customer from '@models/customer';
+import Restaurant from '@models/restaurant';
 
 mongoose.Promise = global.Promise;
 

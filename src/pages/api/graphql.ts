@@ -2,7 +2,7 @@ import { ApolloServer } from 'apollo-server-micro';
 import { MicroRequest } from 'apollo-server-micro/dist/types';
 import { ServerResponse } from 'http';
 
-import connectDB from 'server/config';
+import connectDB from '@config/db';
 import resolvers from 'server/resolvers';
 import typeDefs from 'server/typeDefs';
 

@@ -1,7 +1,8 @@
 import Head from 'next/head';
 import { useState } from 'react';
-import { useQuery } from 'react-query';
-import { graphQLRequest } from 'utils/sdk';
+
+import Restaurant from '@components/Restaurant';
+import { useGQLQuery } from '@services/graphql';
 
 const QUERY_RESTAURANT = `
   query {
@@ -17,9 +18,10 @@ const QUERY_RESTAURANT = `
 export default function Home() {
   const [page] = useState(1);
 
-  const { data, isLoading, error } = useQuery(['restaurant', page], () =>
-    graphQLRequest(QUERY_RESTAURANT)
-  );
+  const { data, isLoading, error } = useGQLQuery({
+    queryKey: ['restaurant', page],
+    query: QUERY_RESTAURANT,
+  });
 
   if (error) {
     return <p>:( an error happened</p>;
@@ -31,7 +33,7 @@ export default function Home() {
         <title>Restaurants</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h1>Restaurants</h1>
+      <Restaurant />
       {isLoading && <p>Loading...</p>}
       {data && (
         <div>
