@@ -19,8 +19,16 @@ interface FieldValues {
 }
 
 const JoinForm = () => {
-  const formMethods = useForm<FieldValues>();
-  const { handleSubmit, getValues } = formMethods;
+  const formMethods = useForm<FieldValues>({
+    mode: 'all',
+    reValidateMode: 'onChange',
+    shouldFocusError: true,
+  });
+  const {
+    handleSubmit,
+    getValues,
+    formState: { isDirty, isValid, isSubmitting },
+  } = formMethods;
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
@@ -30,7 +38,13 @@ const JoinForm = () => {
     console.warn(errors);
   };
 
-  const validate = (value: string) => {
+  const formatPhoneNumber = (e: any) => {
+    let value = e.target.value;
+    value = value.replace(/[^0-9]*/g, '');
+    e.target.value = value;
+  };
+
+  const validatePasswordMatch = (value: string) => {
     const password = getValues('password');
     if (value !== password) {
       return JOIN_VALIDATION_ERRORS.PASSWORD_DONT_MATCH;
@@ -59,16 +73,21 @@ const JoinForm = () => {
           <FormInput
             name={JOIN_FIELDS.PHONE_NUMBER}
             label="Phone Number"
+            onChange={formatPhoneNumber}
             rules={{
               required: JOIN_VALIDATION_ERRORS.PHONE_NUMBER,
               minLength: {
-                value: 15,
+                value: 10,
                 message: JOIN_VALIDATION_ERRORS.INVALID_PHONE_NUMBER,
               },
               maxLength: {
-                value: 15,
+                value: 10,
                 message: JOIN_VALIDATION_ERRORS.INVALID_PHONE_NUMBER,
               },
+              pattern: (value: string) =>
+                value.match(/[0-9]*/i)
+                  ? undefined
+                  : JOIN_VALIDATION_ERRORS.INVALID_PHONE_NUMBER,
             }}
           />
         </FormControl>
@@ -76,6 +95,7 @@ const JoinForm = () => {
           <FormInput
             name={JOIN_FIELDS.PASSWORD}
             label="Password"
+            type="password"
             rules={{ required: JOIN_VALIDATION_ERRORS.PASSWORD }}
           />
         </FormControl>
@@ -83,9 +103,12 @@ const JoinForm = () => {
           <FormInput
             name={JOIN_FIELDS.CONFIRM_PASSWORD}
             label="Confirm Password"
+            type="password"
             rules={{
               required: JOIN_VALIDATION_ERRORS.CONFIRM_PASSWORD,
-              validate,
+              validate: {
+                validatePasswordMatch,
+              },
             }}
           />
         </FormControl>
@@ -97,6 +120,7 @@ const JoinForm = () => {
           color="primary"
           variant="contained"
           type="submit"
+          disabled={!isDirty || isSubmitting || !isValid}
         >
           Create
         </Button>

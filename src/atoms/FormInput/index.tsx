@@ -7,7 +7,7 @@ import { errorStyles } from './styles';
 type Props = TextFieldProps & {
   errorMessage?: string;
   name: string;
-  rules: any;
+  rules?: any;
 };
 
 const renderErrorMessage = (error?: string) => {
@@ -19,19 +19,33 @@ const renderErrorMessage = (error?: string) => {
 };
 
 const FormInput: FC<Props> = (props) => {
-  const { name, rules, defaultValue = '', ...inputProps } = props;
+  const { name, rules, defaultValue = '', onChange, ...inputProps } = props;
 
   const {
     control,
     formState: { errors },
   } = useFormContext();
 
-  const { field } = useController({ name, control, rules, defaultValue });
+  const { field } = useController({
+    name,
+    control,
+    rules,
+    defaultValue,
+  });
   const error = Boolean(errors[name]?.message);
 
   return (
     <>
-      <TextField fullWidth {...inputProps} {...field} error={error} />
+      <TextField
+        fullWidth
+        {...inputProps}
+        {...field}
+        onChange={(e) => {
+          if (onChange) onChange(e);
+          field.onChange(e);
+        }}
+        error={error}
+      />
       {renderErrorMessage(errors[name]?.message)}
     </>
   );
