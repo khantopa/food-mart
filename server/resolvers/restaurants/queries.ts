@@ -1,14 +1,12 @@
-import Restaurant from '../../models/restaurant';
+import Restaurant from 'server/models/restaurant';
 
 const restaurantQueries = {
   restaurants: async () => {
     try {
-      console.log(Restaurant, 'Restaurant');
       const restaurants = await Restaurant.find({});
-      console.log(restaurants);
       return restaurants;
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
   },
 };

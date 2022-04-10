@@ -3,13 +3,13 @@ import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { graphQLRequest } from 'utils/sdk';
 
-import styles from '../styles/Home.module.css';
-
 const QUERY_RESTAURANT = `
   query {
     restaurants {
       id
       name
+      shortDescription
+      description
     }
   }
 `;
@@ -26,17 +26,20 @@ export default function Home() {
   }
 
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
-        <title>Countries GraphQL</title>
+        <title>Restaurants</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h1>Countries</h1>
+      <h1>Restaurants</h1>
       {isLoading && <p>Loading...</p>}
       {data && (
         <div>
           {data?.restaurants.map((restaurant: Record<string, string>) => (
-            <div key={restaurant.id}>{restaurant.name}</div>
+            <div key={restaurant.id}>
+              {restaurant.name}, {restaurant.shortDescription},
+              {restaurant.description}
+            </div>
           ))}
         </div>
       )}

@@ -1,8 +1,14 @@
-import { restaurantQueries } from 'server/resolvers/restaurants';
+import {
+  restaurantQueries,
+  restaurantMutations,
+} from 'server/resolvers/restaurants';
 
 const resolvers = {
   Query: {
     ...restaurantQueries,
+  },
+  Mutation: {
+    ...restaurantMutations,
   },
 };
 
