@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { DocumentNode } from 'graphql';
 
-export const graphQLRequest = async (
+export const graphQLRequest = async <T = Record<string, unknown>>(
   query: DocumentNode | string,
-  variables?: Record<string, unknown>
-) => {
+  variables?: T
+): Promise<any> => {
   try {
     const { data } = await axios.post('/api/graphql', {
       query,
@@ -15,6 +15,7 @@ export const graphQLRequest = async (
 
     return data.data;
   } catch (error) {
-    console.log('Failed to fetch the data');
+    console.log(error, 'Failed');
+    return Promise.reject(error);
   }
 };

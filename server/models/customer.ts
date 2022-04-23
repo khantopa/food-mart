@@ -12,44 +12,21 @@ const CustomerSchema = new Schema(
       type: String,
       required: true,
     },
-    email: {
-      type: String,
-      required: true,
-    },
     phoneNumber: {
       type: String,
       required: true,
+      unique: true,
     },
-    Address: [
-      {
-        name: {
-          type: String,
-          required: true,
-        },
-        street: {
-          type: String,
-          required: true,
-        },
-        city: {
-          type: String,
-          default: 'Kadayanallur',
-        },
-        state: {
-          type: String,
-          default: 'Tamilnadu',
-        },
-        country: {
-          type: String,
-          default: 'India',
-        },
-      },
-    ],
     createdAt: {
       type: Date,
       default: Date.now(),
     },
     updatedAt: {
       type: Date,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
     },
   },
   {

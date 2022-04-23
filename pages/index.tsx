@@ -16,7 +16,7 @@ const QUERY_RESTAURANT = `
 `;
 
 export default function Home() {
-  const [page] = useState(1);
+  const [page, _setPage] = useState(1);
 
   const { data, isLoading, error } = useGQLQuery({
     queryKey: ['restaurant', page],

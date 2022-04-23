@@ -6,7 +6,13 @@ import connectDB from '@config/db';
 import resolvers from 'server/resolvers';
 import typeDefs from 'server/typeDefs';
 
-connectDB();
+(async () => {
+  try {
+    await connectDB();
+  } catch (err) {
+    console.log('Failed to connect to db', err);
+  }
+})();
 
 const apolloServer = new ApolloServer({
   typeDefs,

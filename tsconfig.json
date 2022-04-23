@@ -31,7 +31,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/pages/api/graphql.ts"
+    "pages/api/graphql.ts",
+    "global.d.ts"
   ],
   "exclude": ["node_modules"]
 }

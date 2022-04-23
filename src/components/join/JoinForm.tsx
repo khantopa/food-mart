@@ -9,17 +9,11 @@ import {
 import FormInput from '@atoms/FormInput';
 import { joinFormStyles, joinFormTitleStyles } from './style';
 import { JOIN_FIELDS, JOIN_VALIDATION_ERRORS } from './utils';
-
-interface FieldValues {
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  password: string;
-  confirmPassword: string;
-}
+import { useCreateCustomer } from './mutation';
+import { IJoinForm } from './join.interface';
 
 const JoinForm = () => {
-  const formMethods = useForm<FieldValues>({
+  const formMethods = useForm<IJoinForm>({
     mode: 'all',
     reValidateMode: 'onChange',
     shouldFocusError: true,
@@ -30,11 +24,20 @@ const JoinForm = () => {
     formState: { isDirty, isValid, isSubmitting },
   } = formMethods;
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+  const { mutateAsync: createUser } = useCreateCustomer();
+
+  const onSubmit: SubmitHandler<IJoinForm> = async ({
+    confirmPassword: _,
+    ...params
+  }) => {
+    try {
+      await createUser(params);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const onErrors: SubmitErrorHandler<FieldValues> = (errors) => {
+  const onErrors: SubmitErrorHandler<IJoinForm> = (errors) => {
     console.warn(errors);
   };
 
